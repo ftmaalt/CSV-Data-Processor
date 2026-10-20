@@ -68,3 +68,81 @@ Partial years are not counted.
 | Employee | 1% |
 
 ---
+### 4. Salary Calculation Formula
+
+```text
+Experience Increase = Completed Years × 2%
+
+Total Increase = Experience Increase + Role Increase
+
+New Salary = Current Salary × (1 + Total Increase / 100)
+```
+
+For employees with project completion above 80%:
+
+```text
+Total Increase = (Experience Increase + Role Increase) × 1.5
+```
+
+Employees with project completion below 60% receive no increase.
+
+### Example Calculation
+
+Employee details:
+
+- Name: Alice
+- Current Salary: 52,000
+- Joined Date: 2019-05-12
+- Calculation Date: 2026-10-20
+- Role: Employee
+- Project Completion: 80%
+
+```text
+Completed Years = 7
+
+Experience Increase = 7 × 2% = 14%
+
+Role Increase = 1%
+
+Total Increase = 14% + 1% = 15%
+
+New Salary = 52,000 × 1.15
+
+New Salary = 59,800
+```
+
+---
+
+## Project Structure
+
+```text
+src/
+├── main/
+│   ├── java/
+│   │   └── com/miniproject/dataprocessor/
+│   │       ├── DataprocessorApplication.java
+│   │       ├── DataProcessorRunner.java
+│   │       ├── config/
+│   │       │   └── ExecutorConfig.java
+│   │       ├── model/
+│   │       │   ├── Employee.java
+│   │       │   ├── EmployeeResult.java
+│   │       │   └── Role.java
+│   │       └── service/
+│   │           ├── CsvReaderService.java
+│   │           ├── CsvWriterService.java
+│   │           ├── SalaryCalculatorService.java
+│   │           └── EmployeeProcessingService.java
+│   └── resources/
+│       ├── application.properties
+│       └── test_employees.csv
+├── test/
+│   └── java/
+output/
+└── processed_employees.csv
+
+pom.xml
+README.md
+```
+
+---
