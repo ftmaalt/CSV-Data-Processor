@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
 
 @Service
 public class EmployeeProcessingService {
@@ -20,6 +21,8 @@ public class EmployeeProcessingService {
     @Autowired
     private SalaryCalculatorService calculatorService;
 
+    private final Semaphore semaphore = new Semaphore(2);
+
     public List<EmployeeResult> processNewSalaries(List<Employee> employees) throws ExecutionException, InterruptedException {
         LocalDate calculationDate = LocalDate.now();
 
@@ -27,9 +30,14 @@ public class EmployeeProcessingService {
 
         for (Employee employee : employees) {
             Future<EmployeeResult> future = executor.submit(() -> {
-                BigDecimal newSalary = calculatorService.newSalaryCalculator(employee, calculationDate);
+                semaphore.acquire();
+                try {
+                    BigDecimal newSalary = calculatorService.newSalaryCalculator(employee, calculationDate);
 
-                return new EmployeeResult(employee.emp_id(), employee.name(), employee.current_salary(), newSalary, Thread.currentThread().getName());
+                    return new EmployeeResult(employee.emp_id(), employee.name(), employee.current_salary(), newSalary, Thread.currentThread().getName());
+                } finally {
+                    semaphore.release();
+                }
             });
             futures.add(future);
         }
