@@ -146,3 +146,83 @@ README.md
 ```
 
 ---
+
+## Application Workflow
+
+```text
+Start Spring Boot Application
+            |
+            v
+    DataProcessorRunner
+            |
+            v
+    Read test_employees.csv
+            |
+            v
+    Convert Rows to Employee Objects
+            |
+            v
+    Submit Tasks to ExecutorService
+            |
+            v
+    Semaphore Controls Processing
+            |
+            v
+    Calculate Updated Salaries
+            |
+            v
+    Collect Results Using Future
+            |
+            v
+    ReentrantLock Protects CSV Writing
+            |
+            v
+    Export processed_employees.csv
+            |
+            v
+        Processing Complete
+```
+## Testing and Verification
+
+The application was manually tested using the provided CSV file containing 30 employee records.
+
+### Processing Verification
+
+The application successfully:
+
+1. Loaded all 30 employee records.
+2. Processed employee salaries through the configured thread pool.
+3. Applied salary increments according to the business rules.
+4. Applied the bonus multiplier to eligible employees.
+5. Generated the output CSV containing all 30 employee results.
+
+### Sample Results
+
+Using October 20, 2026 as the calculation date:
+
+| Employee | Original Salary | Updated Salary |
+|---|---:|---:|
+| Alice | 52,000.00 | 59,800.00 |
+| Bob | 68,000.00 | 77,520.00 |
+| Charlie | 75,000.00 | 86,250.00 |
+| Diana | 60,000.00 | 60,000.00 |
+| Eve | 54,000.00 | 66,150.00 |
+
+## Project Outcomes
+
+The project demonstrates practical experience with:
+
+- Reading and writing CSV files.
+- Applying salary increment business rules.
+- Using `BigDecimal` for accurate financial calculations.
+- Implementing multithreading with `ExecutorService`.
+- Retrieving concurrent results using `Future`.
+- Managing shared resources with `ReentrantLock`.
+- Limiting concurrent access using `Semaphore`.
+- Organizing application logic into reusable Spring Boot services.
+
+Because individual salary calculations are lightweight, concurrent processing does not necessarily guarantee faster execution for small datasets.
+
+The main purpose of multithreading in this project is to demonstrate thread management and synchronization techniques.
+
+---
