@@ -19,6 +19,8 @@ public class CsvWriterService {
     public void writeResults(String filePath, List<EmployeeResult> employeeResults) throws IOException {
         writeLock.lock();
         try (FileWriter fileWriter = new FileWriter(filePath); CSVWriter writer = new CSVWriter(fileWriter)) {
+            System.out.println("Writer lock acquired by: "+ Thread.currentThread().getName());
+
             String[] header = {"Employee ID", "Name", "Old Salary", "New Salary", "Processed By"};
             writer.writeNext(header);
 
@@ -34,6 +36,8 @@ public class CsvWriterService {
             }
         } finally {
             writeLock.unlock();
+            System.out.println("Writer lock released by: "+ Thread.currentThread().getName());
+
         }
     }
 }

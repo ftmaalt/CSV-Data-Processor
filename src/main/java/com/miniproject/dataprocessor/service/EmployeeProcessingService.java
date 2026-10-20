@@ -30,13 +30,16 @@ public class EmployeeProcessingService {
 
         for (Employee employee : employees) {
             Future<EmployeeResult> future = executor.submit(() -> {
+                System.out.println(Thread.currentThread().getName() + " is waiting..");
                 semaphore.acquire();
                 try {
+                    System.out.println(Thread.currentThread().getName() +" Acquired Permit ");
                     BigDecimal newSalary = calculatorService.newSalaryCalculator(employee, calculationDate);
 
                     return new EmployeeResult(employee.emp_id(), employee.name(), employee.current_salary(), newSalary, Thread.currentThread().getName());
                 } finally {
                     semaphore.release();
+                    System.out.println("Released,, Thread: "+ Thread.currentThread().getName());
                 }
             });
             futures.add(future);
