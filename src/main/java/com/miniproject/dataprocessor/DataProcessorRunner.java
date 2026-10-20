@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 @Component
@@ -28,6 +30,7 @@ public class DataProcessorRunner implements CommandLineRunner {
         System.out.println("Employees loaded: "+ employees.size());
 
         List<EmployeeResult> processedEmployees =processor.processNewSalaries(employees);
+        Files.createDirectories(Path.of("output"));
 
         csvWriter.writeResults(outputFile, processedEmployees);
         System.out.println("Processed Employees: "+ processedEmployees.size());
